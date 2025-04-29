@@ -7,6 +7,7 @@ Esta seção contém análises detalhadas de cenários reais de tomada de decis�
 ## 🔄 Como Funciona
 
 ```mermaid
+%%{init: { "themeVariables": { "fontFamily": "Arial", "fontSize": "10px" } }}%%
 graph TD
     A[Cenário] --> B[Análise]
     B --> C[Alternativas]

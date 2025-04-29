@@ -7,6 +7,7 @@ Esta seção contém recursos e templates para desenvolvimento de habilidades de
 ## 🔄 Como Funciona
 
 ```mermaid
+%%{init: { "themeVariables": { "fontFamily": "Arial", "fontSize": "10px" } }}%%
 graph TD
     A[Avaliação] --> B[Planejamento]
     B --> C[Execução]

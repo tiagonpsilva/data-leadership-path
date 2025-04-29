@@ -7,6 +7,7 @@ Esta seção contém a documentação estratégica da plataforma de dados, inclu
 ## 🔄 Como Funciona
 
 ```mermaid
+%%{init: { "themeVariables": { "fontFamily": "Arial", "fontSize": "10px" } }}%%
 graph TD
     A[Visão de Plataforma] --> B[ADRs]
     A --> C[Haikus Arquiteturais]

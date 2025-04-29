@@ -7,6 +7,7 @@ Esta seção contém implementações práticas de tecnologias específicas da M
 ## 🔄 Como Funciona
 
 ```mermaid
+%%{init: { "themeVariables": { "fontFamily": "Arial", "fontSize": "10px" } }}%%
 graph TD
     A[Conceito] --> B[Implementação Básica]
     B --> C[Testes]

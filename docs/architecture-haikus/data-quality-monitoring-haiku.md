@@ -59,6 +59,7 @@ Confiabilidade > Observabilidade > Automação > Usabilidade > Escalabilidade > 
 ## Diagrama de Arquitetura (Alto Nível)
 
 ```mermaid
+%%{init: { "themeVariables": { "fontFamily": "Arial", "fontSize": "10px" } }}%%
 graph TB
     subgraph "Dados de Entrada"
         A[Fontes Batch] --> B[Landing Zone]
