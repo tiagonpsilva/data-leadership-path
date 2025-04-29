@@ -7,6 +7,7 @@ Esta seção contém projetos completos que integram múltiplas tecnologias da M
 ## 🔄 Como Funciona
 
 ```mermaid
+%%{init: { "themeVariables": { "fontFamily": "Arial", "fontSize": "10px" } }}%%
 graph TD
     A[Ingestão] --> B[Processamento]
     B --> C[Transformação]
