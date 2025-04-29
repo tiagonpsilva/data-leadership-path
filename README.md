@@ -1,6 +1,6 @@
-# Jornada para Head de Dados
+# Liderança em Dados (Modern Data Stack)
 
-Este repositório documenta minha jornada de desenvolvimento para a posição de Head de Dados, combinando aspectos técnicos e estratégicos necessários para liderar equipes de dados em uma empresa de grande porte do setor financeiro.
+Este repositório documenta minha jornada de desenvolvimento para liderança em Modern Data Stack, combinando aspectos técnicos e estratégicos necessários para liderar equipes de dados em uma empresa de grande porte do setor financeiro.
 
 ## Objetivo
 
