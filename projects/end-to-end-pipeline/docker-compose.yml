@@ -1,0 +1,228 @@
+version: '3'
+
+services:
+  # PostgreSQL - Banco de dados relacional
+  postgres:
+    image: postgres:14
+    container_name: pipeline-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=pipeline_user
+      - POSTGRES_PASSWORD=pipeline_password
+      - POSTGRES_DB=pipeline_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "pipeline_user"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - pipeline-network
+
+  # Apache Airflow - Orquestração
+  airflow-webserver:
+    image: apache/airflow:2.7.1
+    container_name: pipeline-airflow-webserver
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://pipeline_user:pipeline_password@postgres/airflow
+      - AIRFLOW__CORE__FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+      - AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=true
+      - _PIP_ADDITIONAL_REQUIREMENTS=apache-airflow-providers-apache-spark==4.0.0 apache-airflow-providers-postgres==5.4.0 apache-airflow-providers-http==4.1.0 dbt-postgres==1.5.1
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/logs:/opt/airflow/logs
+    command: webserver
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - pipeline-network
+
+  # Airflow Scheduler
+  airflow-scheduler:
+    image: apache/airflow:2.7.1
+    container_name: pipeline-airflow-scheduler
+    depends_on:
+      - airflow-webserver
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://pipeline_user:pipeline_password@postgres/airflow
+      - AIRFLOW__CORE__FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+      - _PIP_ADDITIONAL_REQUIREMENTS=apache-airflow-providers-apache-spark==4.0.0 apache-airflow-providers-postgres==5.4.0 apache-airflow-providers-http==4.1.0 dbt-postgres==1.5.1
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/logs:/opt/airflow/logs
+    command: scheduler
+    networks:
+      - pipeline-network
+
+  # Airflow Init (para inicialização do banco de dados)
+  airflow-init:
+    image: apache/airflow:2.7.1
+    container_name: pipeline-airflow-init
+    depends_on:
+      - postgres
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://pipeline_user:pipeline_password@postgres/airflow
+      - AIRFLOW__CORE__FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+      - _AIRFLOW_DB_UPGRADE=true
+      - _AIRFLOW_WWW_USER_CREATE=true
+      - _AIRFLOW_WWW_USER_USERNAME=admin
+      - _AIRFLOW_WWW_USER_PASSWORD=admin
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/logs:/opt/airflow/logs
+    command: version
+    networks:
+      - pipeline-network
+
+  # Apache Spark Master
+  spark-master:
+    image: bitnami/spark:3.3.0
+    container_name: pipeline-spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - "8081:8080"  # UI do Spark
+      - "7077:7077"  # Porta do Spark Master
+    volumes:
+      - ./spark/jobs:/opt/bitnami/spark/jobs
+      - ./spark/data:/opt/bitnami/spark/data
+    networks:
+      - pipeline-network
+
+  # Apache Spark Worker
+  spark-worker:
+    image: bitnami/spark:3.3.0
+    container_name: pipeline-spark-worker
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    volumes:
+      - ./spark/jobs:/opt/bitnami/spark/jobs
+      - ./spark/data:/opt/bitnami/spark/data
+    networks:
+      - pipeline-network
+
+  # dbt (usando um contêiner Python com dbt instalado)
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-postgres:1.5.1
+    container_name: pipeline-dbt
+    volumes:
+      - ./dbt:/usr/app
+      - ./dbt/profiles.yml:/root/.dbt/profiles.yml
+    working_dir: /usr/app
+    environment:
+      - DBT_PROFILES_DIR=/root/.dbt
+    command: debug
+    networks:
+      - pipeline-network
+
+  # Prometheus para monitoramento
+  prometheus:
+    image: prom/prometheus:v2.43.0
+    container_name: pipeline-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - pipeline-network
+
+  # Grafana para visualização de métricas
+  grafana:
+    image: grafana/grafana:9.4.7
+    container_name: pipeline-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
+    networks:
+      - pipeline-network
+
+  # Node Exporter para exportar métricas do host
+  node-exporter:
+    image: prom/node-exporter:v1.5.0
+    container_name: pipeline-node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    networks:
+      - pipeline-network
+
+  # Cadvisor para monitoramento de contêineres
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    container_name: pipeline-cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - "8082:8080"
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    networks:
+      - pipeline-network
+
+networks:
+  pipeline-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  prometheus_data:
+  grafana_data:
