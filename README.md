@@ -1,44 +1,67 @@
-# Liderança em Dados (Modern Data Stack)
+# 🎯 Liderança em Dados (Modern Data Stack)
 
-Este repositório documenta minha jornada de desenvolvimento para liderança em Modern Data Stack, combinando aspectos técnicos e estratégicos necessários para liderar equipes de dados em uma empresa de grande porte do setor financeiro.
+## 🔍 Sobre este Projeto
 
-## Objetivo
+Este repositório documenta uma jornada de desenvolvimento para liderança em Modern Data Stack, combinando aspectos técnicos e estratégicos necessários para liderar equipes de dados em uma empresa de grande porte do setor financeiro.
+
+## 📋 Índice de Conceitos
+
+1. **🏗️ [Arquitetura de Dados](./docs/README.md)** - Visão de plataforma, ADRs e frameworks de decisão
+2. **🔄 [Projetos Práticos](./projects/README.md)** - Implementações com Airflow, dbt, Spark e monitoramento
+3. **📊 [Estudos de Caso](./case-studies/README.md)** - Cenários reais de tomada de decisão
+4. **👥 [Laboratório de Liderança](./leadership-lab/README.md)** - Desenvolvimento de habilidades de gestão
+5. **🚀 [Projetos End-to-End](./end-to-end/README.md)** - Integrações completas com documentação
+
+## 🌟 Objetivo
 
 Desenvolver as competências necessárias para:
-- Liderar equipes multidisciplinares de dados (Engenheiros, Cientistas e Analistas)
-- Projetar e implementar arquiteturas de dados modernas e escaláveis
-- Gerenciar projetos de dados end-to-end com entrega de valor mensurável
-- Comunicar efetivamente com stakeholders técnicos e de negócios
-- Equilibrar aspectos técnicos e de gestão no dia a dia
+- Liderar equipes multidisciplinares de dados
+- Projetar e implementar arquiteturas modernas e escaláveis
+- Gerenciar projetos end-to-end com valor mensurável
+- Comunicar efetivamente com stakeholders
+- Equilibrar aspectos técnicos e de gestão
 
-## Estrutura do Repositório
+## 🔍 Estrutura
 
-### `/docs`
-Documentação estratégica, incluindo visão de plataforma, ADRs (Architecture Decision Records), haikus arquiteturais e frameworks de decisão.
+Cada pasta numerada contém um README com explicações detalhadas e arquivos adicionais com casos de uso específicos:
 
-### `/projects`
-Projetos práticos individuais focados em tecnologias específicas (Airflow, dbt, Spark, monitoramento).
+- **/docs** - Documentação estratégica e decisões arquiteturais
+- **/projects** - Implementações práticas de tecnologias específicas
+- **/case-studies** - Análises de cenários reais
+- **/leadership-lab** - Templates e recursos de liderança
+- **/end-to-end** - Projetos integrados completos
 
-### `/case-studies`
-Estudos de casos e cenários de tomada de decisão, como modernização de plataforma, otimização de orçamento e priorização entre times.
+## 🛠️ Stack Tecnológica
 
-### `/leadership-lab`
-Recursos para desenvolvimento de habilidades de liderança, incluindo templates para one-on-ones, planos de desenvolvimento de equipe e modelos de feedback.
+| Categoria | Componente | Tecnologias |
+|-----------|------------|-------------|
+| **Ingestão** | Batch | Fivetran, Airbyte, Apache NiFi, AWS DMS, Logstash |
+| | Streaming | Kafka Connect, Debezium (CDC) |
+| | API | REST APIs, GraphQL, gRPC |
+| **Processamento** | Batch | Apache Spark, dbt |
+| | Streaming | Kafka Streams, Spark Structured Streaming, Kinesis |
+| | ETL/ELT | Apache Spark, dbt, Airflow |
+| **Orquestração** | | Apache Airflow |
+| **Armazenamento** | Data Warehouses | Google BigQuery, Amazon Redshift, Databricks SQL |
+| | Data Lakes | Delta Lake, Apache Iceberg, AWS S3 |
+| | Bancos Operacionais | PostgreSQL, MySQL, MongoDB, Cassandra/ScyllaDB, Redis |
+| **Governança de Dados** | Catálogo de Dados | Amundsen (mais popular em open-source) ou Collibra (mais popular comercial) |
+| | Qualidade de Dados | dbt Tests |
+| | Linhagem de Dados | dbt Lineage |
+| | Gestão de Metadados | Apache Atlas |
+| **Monitoramento** | Métricas e Alertas | Prometheus, Grafana |
+| | Logs e Traces | ELK Stack, OpenTelemetry |
+| **Visualização** | BI e Analytics | Tableau, Looker, Power BI |
+| **Segurança e Compliance** | Gestão de Acessos | HashiCorp Vault (infraestrutura) ou Okta (identidade, mais popular) |
+| **DevOps/DataOps** | CI/CD | GitHub Actions |
+| | Infraestrutura como Código | Terraform |
+| | Containerização e Orquestração | Docker, Kubernetes |
 
-### `/end-to-end`
-Projetos integrando múltiplas tecnologias da stack em casos de uso completos, com documentação e diagramas.
+## 📚 Recursos Principais
 
-## Roadmap de Desenvolvimento
-
-O arquivo [ROADMAP.md](ROADMAP.md) contém o plano detalhado de desenvolvimento ao longo de 90 dias, com metas semanais e recursos recomendados.
-
-## Stack Tecnológica em Foco
-
-- **Processamento**: Apache Spark, dbt
-- **Orquestração**: Apache Airflow
-- **Armazenamento**: Snowflake, Delta Lake
-- **Monitoramento**: Prometheus, ELK Stack
-- **Visualização**: Tableau, Looker
+- [Roadmap de Desenvolvimento](ROADMAP.md) - Plano detalhado de 90 dias
+- [Documentação da Plataforma](./docs/platform-vision.md) - Visão técnica e estratégica
+- [Frameworks de Decisão](./docs/decision-frameworks.md) - Guias para tomada de decisão
 
 ## Desafios e Cenários
 
