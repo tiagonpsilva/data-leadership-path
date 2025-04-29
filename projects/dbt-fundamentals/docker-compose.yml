@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  # PostgreSQL como data warehouse
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: dbt_user
+      POSTGRES_PASSWORD: dbt_password
+      POSTGRES_DB: dbt_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "dbt_user"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
+
+  # Contêiner dbt para desenvolvimento
+  dbt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/app
+      - ~/.dbt:/root/.dbt
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DBT_PROFILES_DIR: /usr/app/profiles
+    entrypoint: ["bash"]
+    # O contêiner permanece em execução para permitir acesso interativo
+    tty: true
+
+  # Adminer para gerenciamento visual do banco de dados
+  adminer:
+    image: adminer:latest
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "8081:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: pappu687
+
+volumes:
+  postgres_data:
