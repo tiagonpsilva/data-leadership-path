@@ -1,0 +1,45 @@
+# Nome do projeto dbt
+name: 'dbt_demo'
+version: '1.0.0'
+config-version: 2
+
+# Este diretório contém arquivos de configuração do dbt
+profile: 'dbt_project'
+
+# Modelo de materialização padrão: table, view, incremental ou ephemeral
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"  # Diretório para saídas compiladas
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  dbt_demo:
+    # Configurações globais aplicadas a todos os modelos
+    +materialized: view
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: intermediate
+    marts:
+      +materialized: table
+      +schema: mart
+      finance:
+        +schema: mart_finance
+      marketing:
+        +schema: mart_marketing
+
+snapshots:
+  dbt_demo:
+    +target_schema: snapshots
+
+seeds:
+  dbt_demo:
+    +schema: raw_data
+    +quote_columns: true
