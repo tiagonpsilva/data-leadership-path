@@ -2,11 +2,14 @@
 
 Este roadmap detalha um plano de 90 dias para desenvolver as competências necessárias para a posição de Head de Dados, com foco nas áreas identificadas como gaps: orquestração (Airflow), processamento moderno (dbt), monitoramento e governança de dados.
 
+> **Dica:** Para experimentação local, prototipagem de pipelines e aprendizado de SQL/analytics, recomenda-se o uso do DuckDB. Ele permite executar queries analíticas em arquivos Parquet, CSV ou DataFrames diretamente no seu notebook Python, com performance de data warehouse, sem necessidade de infraestrutura dedicada.
+
 ## Fase 1: Fundamentos (Semanas 1-4)
 
 ### Semana 1: Configuração e Airflow Básico
 - [x] Criar estrutura do repositório
 - [ ] Configurar ambiente local com Docker para laboratórios
+- [ ] Instalar DuckDB para experimentação local (opcional)
 - [ ] Estudar conceitos fundamentais do Airflow:
   - [ ] DAGs, Operators, Sensors
   - [ ] Schedulers e Executors
@@ -15,15 +18,17 @@ Este roadmap detalha um plano de 90 dias para desenvolver as competências neces
   - [ ] [Documentação oficial do Airflow](https://airflow.apache.org/docs/apache-airflow/stable/index.html)
   - [ ] [Curso "The Complete Hands-On Course to Master Apache Airflow"](https://www.udemy.com/course/the-complete-hands-on-course-to-master-apache-airflow/)
   - [ ] [Deploying Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)
+  - [ ] [Documentação oficial do DuckDB](https://duckdb.org/docs/)
 
 ### Semana 2: dbt Fundamentals
 - [ ] Entender o paradigma do dbt e Analytics Engineering
 - [ ] Configurar projeto dbt básico
+- [ ] (Opcional) Integrar dbt com DuckDB para laboratório local
 - [ ] Implementar modelos, testes e documentação
 - [ ] Recursos:
   - [ ] [Curso oficial dbt Fundamentals](https://courses.getdbt.com/courses/fundamentals)
   - [ ] [dbt Best Practices](https://docs.getdbt.com/guides/best-practices)
-  - [ ] [Exemplo de projeto dbt](https://github.com/dbt-labs/jaffle_shop)
+  - [ ] [Exemplo de projeto dbt com DuckDB](https://github.com/jwills/dbt-duckdb-demo)
 
 ### Semana 3: Monitoramento e Observabilidade
 - [ ] Estudar conceitos de observabilidade vs. monitoramento
@@ -55,10 +60,12 @@ Este roadmap detalha um plano de 90 dias para desenvolver as competências neces
 
 ### Semana 6: dbt + Spark Integration
 - [ ] Integrar dbt com Spark para transformações em grande escala
+- [ ] (Opcional) Explorar integração dbt + DuckDB para prototipagem local
 - [ ] Implementar padrões de modelagem eficientes
 - [ ] Configurar monitoramento de jobs dbt
 - [ ] Recursos:
   - [ ] [dbt-spark adapter](https://docs.getdbt.com/reference/warehouse-setups/spark-setup)
+  - [ ] [dbt-duckdb adapter](https://docs.getdbt.com/reference/warehouse-setups/duckdb-setup)
   - [ ] [Optimizing Spark SQL](https://spark.apache.org/docs/latest/sql-performance-tuning.html)
 
 ### Semana 7: Estratégia de Dados e Framework de Priorização
@@ -81,6 +88,7 @@ Este roadmap detalha um plano de 90 dias para desenvolver as competências neces
 
 ### Semana 9-10: Implementação de Pipeline Completo
 - [ ] Criar projeto end-to-end integrando Airflow, dbt e Spark
+- [ ] (Opcional) Prototipar pipeline local com DuckDB antes de escalar
 - [ ] Implementar monitoramento completo
 - [ ] Documentar arquitetura e decisões técnicas (ADR)
 - [ ] Recursos:
@@ -100,6 +108,7 @@ Este roadmap detalha um plano de 90 dias para desenvolver as competências neces
 ### Checkpoint 1 (Final da Semana 4)
 - [ ] Ambiente de desenvolvimento configurado e funcionando
 - [ ] Projetos básicos de Airflow e dbt implementados
+- [ ] (Opcional) Laboratório de queries SQL com DuckDB
 - [ ] Entendimento fundamental de monitoramento e governança
 
 ### Checkpoint 2 (Final da Semana 8)
@@ -124,6 +133,7 @@ Este roadmap detalha um plano de 90 dias para desenvolver as competências neces
 - [Slack Community dbt](https://community.getdbt.com/)
 - [Apache Airflow Slack](https://apache-airflow.slack.com/)
 - [Data Engineering Subreddit](https://www.reddit.com/r/dataengineering/)
+- [DuckDB Discord](https://discord.gg/duckdb)
 
 ### Newsletters
 - [Data Engineering Weekly](https://dataengineeringweekly.substack.com/)

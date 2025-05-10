@@ -38,12 +38,14 @@ Cada pasta numerada contém um README com explicações detalhadas e arquivos ad
 | **Ingestão** | Batch | Fivetran, Airbyte, Apache NiFi, AWS DMS, Logstash |
 | | Streaming | Kafka Connect, Debezium (CDC) |
 | | API | REST APIs, GraphQL, gRPC |
-| **Processamento** | Batch | Apache Spark, dbt |
+| **Processamento** | Batch | Apache Spark, dbt, DuckDB |
 | | Streaming | Kafka Streams, Spark Structured Streaming, Kinesis |
-| | ETL/ELT | Apache Spark, dbt, Airflow |
+| | ETL/ELT | Apache Spark, dbt, Airflow, DuckDB |
+| | SQL Analytics Local | DuckDB |
 | **Orquestração** | | Apache Airflow |
-| **Armazenamento** | Data Warehouses | Google BigQuery, Amazon Redshift, Databricks SQL |
+| **Armazenamento** | Data Warehouses | Google BigQuery, Amazon Redshift, Databricks SQL, DuckDB |
 | | Data Lakes | Delta Lake, Apache Iceberg, AWS S3 |
+| | Data Lakehouse Local | DuckDB |
 | | Bancos Operacionais | PostgreSQL, MySQL, MongoDB, Cassandra/ScyllaDB, Redis |
 | **Governança de Dados** | Catálogo de Dados | Amundsen (mais popular em open-source) ou Collibra (mais popular comercial) |
 | | Qualidade de Dados | dbt Tests |
@@ -56,6 +58,16 @@ Cada pasta numerada contém um README com explicações detalhadas e arquivos ad
 | **DevOps/DataOps** | CI/CD | GitHub Actions |
 | | Infraestrutura como Código | Terraform |
 | | Containerização e Orquestração | Docker, Kubernetes |
+
+### Sobre o DuckDB
+
+O DuckDB é um banco de dados analítico embutido, orientado a colunas, projetado para processamento analítico local (OLAP) de alta performance. Ele é ideal para:
+- Prototipagem e experimentação de pipelines de dados
+- Análise exploratória e notebooks interativos (Python, R, etc.)
+- Integração com dbt, pandas, polars e outras ferramentas modernas
+- Workloads locais, laboratoriais e POCs sem necessidade de infraestrutura dedicada
+
+O DuckDB pode ser utilizado tanto como engine SQL local quanto como "mini data warehouse" para projetos de laboratório, prototipagem e aprendizado.
 
 ## 📚 Recursos Principais
 

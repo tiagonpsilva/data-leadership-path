@@ -14,6 +14,7 @@ graph TD
     B --> D[Decisões Técnicas]
     C --> D
     D --> E[Implementação]
+    D --> F[Prototipagem Local (DuckDB)]
 ```
 
 ## 📊 Tipos Principais
@@ -26,6 +27,8 @@ Representações concisas e poéticas de conceitos arquiteturais complexos, faci
 
 ### 🎯 Frameworks de Decisão
 Guias estruturados para tomada de decisão em diferentes contextos da plataforma de dados.
+
+> **Nota:** Para experimentação, prototipagem e workloads locais, recomenda-se o uso do DuckDB como engine SQL embutido, facilitando testes rápidos, POCs e integração com notebooks Python/R.
 
 ## 🔗 Casos de Uso
 
